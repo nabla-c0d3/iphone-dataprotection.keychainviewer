@@ -69,13 +69,17 @@ CFDataRef decrypt_data_ios3(const uint8_t* datab, uint32_t len, uint32_t* pclass
     {
         fprintf(stderr, "seteuid(_securityd) failed, errno=%d\n", errno);
     }
+    if(geteuid() != 64) //HAX otherwise looks like the new uid isnt "commited"
+    {
+        fprintf(stderr,"geteuid=%x\n", geteuid()); 
+    }
     ret = IOConnectCallStructMethod(conn, kIOAESAcceleratorTask, &in, IOAESStructSize, &in, &IOAESStructSize);
 
     if (ret == 0xe00002c2) //if we have an iOS 3 keychain on iOS 4
     {
         IOAESStructSize += 4;
         ret = IOConnectCallStructMethod(conn, kIOAESAcceleratorTask, &in, IOAESStructSize, &in, &IOAESStructSize);
-   }
+    }
     if (seteuid(saved_uid) == -1)
     {
         fprintf(stderr, "seteuid(saved_uid) failed, errno=%d\n", errno);

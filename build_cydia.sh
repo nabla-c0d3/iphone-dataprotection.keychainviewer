@@ -2,9 +2,9 @@
 IPHONE_HOST="localhost"
 SSHPORT=2222
 
-cp -R build/Release-iphoneos/KeychainViewer.app/ cydia/Applications/KeychainViewer.app/
+cp -R build/Release-iphoneos/KeychainViewer.app cydia/Applications/
 make
-mv KeychainViewer cydia/Applications/KeychainViewer.app/KeychainViewer
+cp KeychainViewer cydia/Applications/KeychainViewer.app/KeychainViewer
 
 ssh -p $SSHPORT root@$IPHONE_HOST 'rm -rf /var/root/cydia'
 scp -P $SSHPORT -r cydia root@$IPHONE_HOST:/var/root

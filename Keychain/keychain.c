@@ -364,7 +364,11 @@ RSAPrivateKey ::= SEQUENCE {
     while(i < 9 && *dest != NULL)
     {
         CFDataRef d = CFDataCreate(kCFAllocatorDefault, (*dest)->Data, (*dest)->Length);
-        CFDictionarySetValue(dict, RSAPrivateKey_fields[i], d);
+        if (d != NULL)
+        {
+            CFDictionarySetValue(dict, RSAPrivateKey_fields[i], d);
+            CFRelease(d);
+        }
         dest++;
         i++;
     }
