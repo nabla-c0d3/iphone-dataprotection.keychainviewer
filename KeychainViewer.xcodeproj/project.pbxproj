@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0FBA17961354DB930076D534 /* PasswordView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FBA17951354DB930076D534 /* PasswordView.plist */; };
+		0FF6075B135CD0420031F82A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FF6075A135CD0420031F82A /* icon.png */; };
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		3008F14913522F2C00A74706 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3008F14813522F2C00A74706 /* libsqlite3.0.dylib */; };
+		841CB800136059110005A5BB /* rootstrap.sh in Resources */ = {isa = PBXBuildFile; fileRef = 841CB7FF136059110005A5BB /* rootstrap.sh */; };
+		84221F1813535CA300618510 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84221F1713535CA300618510 /* IOKit.framework */; };
+		8484F5761355B5D200F87AA7 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F55A1355B5D200F87AA7 /* FMDatabase.m */; };
+		8484F5771355B5D200F87AA7 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F55C1355B5D200F87AA7 /* FMDatabaseAdditions.m */; };
+		8484F5791355B5D200F87AA7 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F55F1355B5D200F87AA7 /* FMResultSet.m */; };
+		8484F57B1355B5D200F87AA7 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5641355B5D200F87AA7 /* DetailViewController.m */; };
+		8484F57C1355B5D200F87AA7 /* KeychainViewerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5661355B5D200F87AA7 /* KeychainViewerAppDelegate.m */; };
+		8484F57D1355B5D200F87AA7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5681355B5D200F87AA7 /* ListViewController.m */; };
+		8484F57E1355B5D200F87AA7 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F56A1355B5D200F87AA7 /* RootViewController.m */; };
+		8484F5801355B5D200F87AA7 /* IOKit.c in Sources */ = {isa = PBXBuildFile; fileRef = 8484F56D1355B5D200F87AA7 /* IOKit.c */; };
+		8484F5811355B5D200F87AA7 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5701355B5D200F87AA7 /* Keychain.m */; };
+		8484F58F1355B72D00F87AA7 /* GenericTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F58E1355B72D00F87AA7 /* GenericTableViewController.m */; };
+		848AD8001354717C0042EA64 /* CertificateView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 848AD7FF1354717C0042EA64 /* CertificateView.plist */; };
+		848AD879135485370042EA64 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 848AD878135485370042EA64 /* Localizable.strings */; };
+		84977EB1136AEF1100FE77E0 /* KeyView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84977EB0136AEF1100FE77E0 /* KeyView.plist */; };
+		84A57896136EFED5006C06F3 /* keychain.c in Sources */ = {isa = PBXBuildFile; fileRef = 84A57895136EFED5006C06F3 /* keychain.c */; };
+		84EE5A7113549B2A007DB219 /* InternetPasswordView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */; };
+		84EE5A7C13549EBA007DB219 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EE5A7B13549EBA007DB219 /* Security.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0FBA17951354DB930076D534 /* PasswordView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PasswordView.plist; sourceTree = "<group>"; };
+		0FF6075A135CD0420031F82A /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* KeychainViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeychainViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28A0AAE50D9B0CCF005BE974 /* KeychainViewer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainViewer_Prefix.pch; sourceTree = "<group>"; };
+		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3008F14813522F2C00A74706 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		841CB7FF136059110005A5BB /* rootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = rootstrap.sh; sourceTree = "<group>"; };
+		84221F1713535CA300618510 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		8484F5591355B5D200F87AA7 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		8484F55A1355B5D200F87AA7 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		8484F55B1355B5D200F87AA7 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		8484F55C1355B5D200F87AA7 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		8484F55E1355B5D200F87AA7 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		8484F55F1355B5D200F87AA7 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		8484F5631355B5D200F87AA7 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		8484F5641355B5D200F87AA7 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		8484F5651355B5D200F87AA7 /* KeychainViewerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainViewerAppDelegate.h; sourceTree = "<group>"; };
+		8484F5661355B5D200F87AA7 /* KeychainViewerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainViewerAppDelegate.m; sourceTree = "<group>"; };
+		8484F5671355B5D200F87AA7 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		8484F5681355B5D200F87AA7 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		8484F5691355B5D200F87AA7 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		8484F56A1355B5D200F87AA7 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		8484F56D1355B5D200F87AA7 /* IOKit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IOKit.c; sourceTree = "<group>"; };
+		8484F56E1355B5D200F87AA7 /* IOKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOKit.h; sourceTree = "<group>"; };
+		8484F56F1355B5D200F87AA7 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
+		8484F5701355B5D200F87AA7 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
+		8484F58D1355B72D00F87AA7 /* GenericTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericTableViewController.h; sourceTree = "<group>"; };
+		8484F58E1355B72D00F87AA7 /* GenericTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericTableViewController.m; sourceTree = "<group>"; };
+		848AD7FF1354717C0042EA64 /* CertificateView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CertificateView.plist; sourceTree = "<group>"; };
+		848AD878135485370042EA64 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		84977EB0136AEF1100FE77E0 /* KeyView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeyView.plist; sourceTree = "<group>"; };
+		84A57895136EFED5006C06F3 /* keychain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain.c; sourceTree = "<group>"; };
+		84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InternetPasswordView.plist; sourceTree = "<group>"; };
+		84EE5A7B13549EBA007DB219 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		84FFDBE7136AEC4300021E7C /* SecCert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecCert.h; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* KeychainViewer-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "KeychainViewer-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
+				3008F14913522F2C00A74706 /* libsqlite3.0.dylib in Frameworks */,
+				84221F1813535CA300618510 /* IOKit.framework in Frameworks */,
+				84EE5A7C13549EBA007DB219 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* KeychainViewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				8484F5581355B5D200F87AA7 /* FMDB */,
+				8484F5601355B5D200F87AA7 /* GUI */,
+				8484F56B1355B5D200F87AA7 /* Keychain */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				84EE5A7B13549EBA007DB219 /* Security.framework */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				28A0AAE50D9B0CCF005BE974 /* KeychainViewer_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				84977EB0136AEF1100FE77E0 /* KeyView.plist */,
+				841CB7FF136059110005A5BB /* rootstrap.sh */,
+				0FF6075A135CD0420031F82A /* icon.png */,
+				0FBA17951354DB930076D534 /* PasswordView.plist */,
+				84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */,
+				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
+				8D1107310486CEB800E47090 /* KeychainViewer-Info.plist */,
+				848AD7FF1354717C0042EA64 /* CertificateView.plist */,
+				848AD878135485370042EA64 /* Localizable.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				84221F1713535CA300618510 /* IOKit.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
+				3008F14813522F2C00A74706 /* libsqlite3.0.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8484F5581355B5D200F87AA7 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				8484F5591355B5D200F87AA7 /* FMDatabase.h */,
+				8484F55A1355B5D200F87AA7 /* FMDatabase.m */,
+				8484F55B1355B5D200F87AA7 /* FMDatabaseAdditions.h */,
+				8484F55C1355B5D200F87AA7 /* FMDatabaseAdditions.m */,
+				8484F55E1355B5D200F87AA7 /* FMResultSet.h */,
+				8484F55F1355B5D200F87AA7 /* FMResultSet.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
+		8484F5601355B5D200F87AA7 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				8484F5631355B5D200F87AA7 /* DetailViewController.h */,
+				8484F5641355B5D200F87AA7 /* DetailViewController.m */,
+				8484F5651355B5D200F87AA7 /* KeychainViewerAppDelegate.h */,
+				8484F5661355B5D200F87AA7 /* KeychainViewerAppDelegate.m */,
+				8484F5671355B5D200F87AA7 /* ListViewController.h */,
+				8484F5681355B5D200F87AA7 /* ListViewController.m */,
+				8484F5691355B5D200F87AA7 /* RootViewController.h */,
+				8484F56A1355B5D200F87AA7 /* RootViewController.m */,
+				8484F58D1355B72D00F87AA7 /* GenericTableViewController.h */,
+				8484F58E1355B72D00F87AA7 /* GenericTableViewController.m */,
+			);
+			path = GUI;
+			sourceTree = "<group>";
+		};
+		8484F56B1355B5D200F87AA7 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				84A57895136EFED5006C06F3 /* keychain.c */,
+				84FFDBE7136AEC4300021E7C /* SecCert.h */,
+				8484F56D1355B5D200F87AA7 /* IOKit.c */,
+				8484F56E1355B5D200F87AA7 /* IOKit.h */,
+				8484F56F1355B5D200F87AA7 /* Keychain.h */,
+				8484F5701355B5D200F87AA7 /* Keychain.m */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* KeychainViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "KeychainViewer" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KeychainViewer;
+			productName = KeychainViewer;
+			productReference = 1D6058910D05DD3D006BFB54 /* KeychainViewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KeychainViewer" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* KeychainViewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
+				848AD8001354717C0042EA64 /* CertificateView.plist in Resources */,
+				848AD879135485370042EA64 /* Localizable.strings in Resources */,
+				84EE5A7113549B2A007DB219 /* InternetPasswordView.plist in Resources */,
+				0FBA17961354DB930076D534 /* PasswordView.plist in Resources */,
+				0FF6075B135CD0420031F82A /* icon.png in Resources */,
+				841CB800136059110005A5BB /* rootstrap.sh in Resources */,
+				84977EB1136AEF1100FE77E0 /* KeyView.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				8484F5761355B5D200F87AA7 /* FMDatabase.m in Sources */,
+				8484F5771355B5D200F87AA7 /* FMDatabaseAdditions.m in Sources */,
+				8484F5791355B5D200F87AA7 /* FMResultSet.m in Sources */,
+				8484F57B1355B5D200F87AA7 /* DetailViewController.m in Sources */,
+				8484F57C1355B5D200F87AA7 /* KeychainViewerAppDelegate.m in Sources */,
+				8484F57D1355B5D200F87AA7 /* ListViewController.m in Sources */,
+				8484F57E1355B5D200F87AA7 /* RootViewController.m in Sources */,
+				8484F5801355B5D200F87AA7 /* IOKit.c in Sources */,
+				8484F5811355B5D200F87AA7 /* Keychain.m in Sources */,
+				8484F58F1355B72D00F87AA7 /* GenericTableViewController.m in Sources */,
+				84A57896136EFED5006C06F3 /* keychain.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = KeychainViewer_Prefix.pch;
+				INFOPLIST_FILE = "KeychainViewer-Info.plist";
+				PRODUCT_NAME = KeychainViewer;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = KeychainViewer_Prefix.pch;
+				INFOPLIST_FILE = "KeychainViewer-Info.plist";
+				PRODUCT_NAME = KeychainViewer;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INFOPLIST_OUTPUT_FORMAT = xml;
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INFOPLIST_OUTPUT_FORMAT = xml;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "KeychainViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KeychainViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

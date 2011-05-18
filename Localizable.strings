@@ -1,0 +1,41 @@
+/* 
+   Localizable.strings
+   KeychainViewer
+
+   Created by admin on 4/12/11.
+   Copyright 2011 __MyCompanyName__. All rights reserved.
+ */
+"svce"="Service";
+"acct"="Account";
+"labl"="Label";
+"password"="Password";
+"agrp"="Access group";
+"srvr"="Server";
+"port"="Port";
+"ptcl"="Protocol";
+"protection_class"="Protection class";
+"country"="Country Name";
+"state"="State or Province Name";
+"locality"="Locality Name";
+"organization"="Organization Name";
+"organizational_unit"="Organizational Unit Name";
+"common_name"="Common Name";
+"issuer"="Issuer";
+"version"="Version";
+"serial_number"="Serial Number";
+"algorithm"="Algorithm";
+"parameters"="Parameters";
+"not_valid_before"="Not Valid Before";
+"not_valid_after"="Not Valid After";
+"pk_data"="Public Key Data";
+"pk_sha1"="Public Key Hash";
+"signature"="Signature";
+"modulus"="Modulus";
+"public_exponent"="Public exponent";
+"private_exponent"="Private exponent";
+"prime1"="Prime 1";
+"prime2"="Prime 2";
+"exponent1"="Exponent 1";
+"exponent2"="Exponent 2";
+"coefficient"="Coefficient";
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+    <dict>
+		<key>title</key>
+		<string>Keychain properties</string>
+		<key>rows</key>
+		<array>
+			<string>protection_class</string>
+			<string>labl</string>
+			<string>agrp</string>
+			<string>rowid</string>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Certificate</string>
+		<key>rows</key>
+		<array>
+			<string>common_name</string>
+			<string>issuer</string>
+			<!--string>properties</string-->
+			<string>not_valid_before</string>
+			<string>not_valid_after</string>
+			<string>serial_number</string>
+			<string>pk_sha1</string>
+		</array>
+	</dict>
+</array>
+</plist>
