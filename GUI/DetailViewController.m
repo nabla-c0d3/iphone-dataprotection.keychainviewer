@@ -103,27 +103,32 @@
 	
 	id obj = [self.data objectForKey:key];
 	
-	if (![obj isKindOfClass:[NSNull class]])
-	{
-		if ([obj isKindOfClass:[NSDictionary class]])
-		{
-			obj = @"Dictionary";
-			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-		}
-		else if ([obj isKindOfClass:[NSArray class]])
-		{
-			obj = @"Array";
-			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-		}
-		if ([obj isKindOfClass:[NSNumber class]])
-			obj = [obj stringValue];
-		else if (![obj isKindOfClass:[NSString class]])
-            obj = [obj description];
-		
-		cell.detailTextLabel.text = obj;
-	}
+    if ([obj isKindOfClass:[NSNull class]])
+    {
+        obj = @"[NULL]";
+    }
+    else if ([obj isKindOfClass:[NSDictionary class]])
+    {
+        obj = @"Dictionary";
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    else if ([obj isKindOfClass:[NSArray class]])
+    {
+        obj = @"Array";
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    else if ([obj isKindOfClass:[NSNumber class]])
+    {
+        obj = [obj stringValue];
+    }
+    else if (![obj isKindOfClass:[NSString class]])
+    {
+        obj = [obj description];
+    }
+    cell.detailTextLabel.text = obj;
+    
     return cell;
 }
 

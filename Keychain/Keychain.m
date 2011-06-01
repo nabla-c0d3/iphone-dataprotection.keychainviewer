@@ -11,7 +11,7 @@
 void checkAccessibility(NSDictionary* res)
 {
     NSData* data = [res objectForKey:@"data"];
-    if (data != nil && [data length] >= 48) {
+    if (data != nil && [data isKindOfClass:[NSData class]] && [data length] >= 48) {
         const uint32_t* bytes = [data bytes];
         uint32_t clas = bytes[1];
         if (clas != kSecAttrAccessibleAlways && clas != kSecAttrAccessibleAlwaysThisDeviceOnly) {

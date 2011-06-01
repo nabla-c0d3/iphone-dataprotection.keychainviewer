@@ -50,7 +50,17 @@ CFMutableDataRef decrypt_item(CFMutableDictionaryRef dict)
 	if (data == NULL) {
 		return NULL;
 	}
-	
+    if (CFGetTypeID(data) == CFNullGetTypeID())
+    {
+        CFMutableDataRef r = CFDataCreateMutable(kCFAllocatorDefault, 10);
+        CFDataAppendBytes(r, "[NULL]", 7);
+        return r;
+    }
+    if (CFGetTypeID(data) != CFDataGetTypeID())
+    {
+        return NULL;
+    }
+
     const uint8_t* datab = CFDataGetBytePtr(data);
     CFIndex len = CFDataGetLength(data);
     
