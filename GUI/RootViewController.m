@@ -36,7 +36,7 @@
     [super viewDidLoad];
 	self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", nil];
     self.title = @"Keychain Viewer";
-	self.keychain = [[Keychain alloc] init];
+	self.keychain = keychain_open(NULL);
 }
 
 
@@ -107,19 +107,19 @@
 	ListViewController* listViewController = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
 	
 	if (index == 0) {
-		listViewController.items = [self.keychain getGenericPasswords];
+		listViewController.items = (NSArray*) keychain_get_passwords(self.keychain);
 		listViewController.detailViewName = @"PasswordView";
 	}
 	else if (index == 1) {
-		listViewController.items = [self.keychain getInternetPasswords];
+		listViewController.items = (NSArray*) keychain_get_internet_passwords(self.keychain);
 		listViewController.detailViewName = @"InternetPasswordView";
 	}
 	else if (index == 2) {
-		listViewController.items = [self.keychain getCertificates];
+		listViewController.items = (NSArray*) keychain_get_certs(self.keychain);
 		listViewController.detailViewName = @"CertificateView";
 	}
 	else if (index == 3) {
-		listViewController.items = [self.keychain getKeys];
+		listViewController.items = (NSArray*) keychain_get_keys(self.keychain);
 		listViewController.detailViewName = @"KeyView";
 	}
 	listViewController.title = [self.keychainCategories objectAtIndex: index];

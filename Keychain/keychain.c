@@ -1,12 +1,14 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CommonCrypto/CommonCryptor.h>
 #include <Security/Security.h>
+#include <sqlite3.h>
 #include "IOKit.h"
 #include "SecCert.h"
+#include "keychain.h"
 
 #define kAppleKeyStoreKeyUnwrap 11
 
-CFStringRef protectionClassIdToString(uint32_t protection_class)
+CFStringRef keychain_protectionClassIdToString(uint32_t protection_class)
 {
     static CFStringRef protectionClasses[] = {
         CFSTR("kSecAttrAccessibleWhenUnlocked"),
@@ -39,119 +41,193 @@ IOReturn AppleKeyStore_keyUnwrap(uint32_t protection_class, const uint8_t* buffe
                     &outputStructCnt);
 }
 
-CFMutableDataRef decrypt_item(CFMutableDictionaryRef dict)
+Keychain* keychain_open(const char* path)
 {
-    uint8_t aes_key[48];
-    IOReturn ret;
-    size_t dataOutMoved = 0;
+    sqlite3_stmt *stmt;
+    Keychain* k = malloc(sizeof(Keychain));
+    if (k == NULL)
+        return NULL;
     
-	CFDataRef data = CFDictionaryGetValue(dict, CFSTR("data"));
-	
-	if (data == NULL) {
-		return NULL;
-	}
-    if (CFGetTypeID(data) == CFNullGetTypeID())
+    if (path == NULL)
+        path = "/var/Keychains/keychain-2.db";
+    
+    if (sqlite3_open_v2(path, &k->db, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK)
     {
-        CFMutableDataRef r = CFDataCreateMutable(kCFAllocatorDefault, 10);
-        CFDataAppendBytes(r, "[NULL]", 7);
-        return r;
-    }
-    if (CFGetTypeID(data) != CFDataGetTypeID())
-    {
+        fprintf(stderr, "open_keychain : sqlite3_open_v2 fail\n");
+        free(k);
         return NULL;
     }
-
-    const uint8_t* datab = CFDataGetBytePtr(data);
-    CFIndex len = CFDataGetLength(data);
-    
-    if (len < 48)
+    sqlite3_prepare_v2(k->db, "SELECT version FROM tversion", -1, &stmt, NULL);
+    if(sqlite3_step(stmt) != SQLITE_ROW)
     {
-        fprintf(stderr, "keychain item len < 48\n");
+        fprintf(stderr, "open_keychain : cannot get version from tversion table\n");
+        free(k);
         return NULL;
     }
+    k->version = sqlite3_column_int(stmt, 0);
     
-    //first by of second le dword
-    uint32_t protection_class = datab[4];
-    
-	CFDictionarySetValue(dict, CFSTR("protection_class"), protectionClassIdToString(protection_class));
-    
-	uint32_t item_length = len-48;
-    
-    if((ret = AppleKeyStore_keyUnwrap(protection_class, &datab[8], 40, aes_key)))
-	{
-        fprintf(stderr, "AppleKeyStore_keyUnwrap = %x\n", ret);
-		return NULL;
-	}
-    
-    CFMutableDataRef item = CFDataCreateMutable(kCFAllocatorDefault, item_length);
-    if (item == NULL)
+    if (k->version  <= 3)
     {
-        memset(aes_key, 0, 48);
-        return NULL;
+        k->get_item = keychain_get_item_ios3;
     }
-    CFDataSetLength(item, item_length);
-    
-    CCCryptorStatus cs = CCCrypt(kCCDecrypt,
-                                 kCCAlgorithmAES128,
-                                 kCCOptionPKCS7Padding,
-                                 aes_key,
-                                 32,
-                                 NULL,
-                                 &datab[48],
-                                 item_length,
-                                 (void*) CFDataGetBytePtr(item),
-                                 item_length,
-                                 &dataOutMoved);
-    
-    memset(aes_key, 0, 48);
-    if (cs != 0)
+    else if (k->version == 4)
     {
-        fprintf(stderr, "Keychain item decryption failed, CCCryptorStatus = %x\n", cs);
-        CFRelease(item);
-        return NULL;
+        k->get_item = keychain_get_item_ios4;
     }
-    CFDataSetLength(item, dataOutMoved);
+    else if (k->version >= 5)
+    {
+        k->get_item = keychain_get_item_ios5;
+    }
     
-    return item;    
+    return k;
 }
 
-void decrypt_password_item(CFMutableDictionaryRef dict)
+int keychain_close(Keychain* k)
+{
+    return sqlite3_close(k->db);
+}
+
+
+CFArrayRef keychain_get_items(Keychain* k, const char* sql, void (*callback)(Keychain*, CFMutableDictionaryRef))
+{
+    sqlite3_stmt *stmt;
+
+    CFMutableArrayRef res = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+    
+    sqlite3_prepare_v2(k->db, sql, -1, &stmt, NULL);
+    
+    while(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        CFMutableDictionaryRef item = k->get_item(stmt);
+        if(item != NULL)
+        {
+            if (callback != NULL) {
+                callback(k, item);
+            }
+
+            CFArrayAppendValue(res, item);
+            CFRelease(item);
+        }
+    }
+    sqlite3_finalize(stmt);
+    return res;
+}
+
+CFMutableDictionaryRef keychain_get_item(sqlite3_stmt* stmt, CFDataRef (*decryptor)(const uint8_t*, uint32_t, uint32_t*))
+{
+    const char* name;
+    const unsigned char* text;
+    const void* blob;
+    sqlite3_int64 num64;
+    double dbl;
+    CFNumberRef cfnum;
+    CFDataRef cfd;
+    CFStringRef cfs;
+    uint32_t i, len, pclass;
+    
+    CFMutableDictionaryRef res = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    
+    for(i=0; i < sqlite3_column_count(stmt) ; i++)
+    {
+        name = sqlite3_column_name(stmt,i);
+        if(!strcmp(name, "data"))
+        {
+            blob = sqlite3_column_blob(stmt, i);
+            len = sqlite3_column_bytes(stmt, i);
+            CFDataRef data = decryptor(blob,len, &pclass);
+            if( data != NULL)
+            {
+                CFDictionarySetValue(res, CFSTR("protection_class"), keychain_protectionClassIdToString(pclass));
+                CFTypeRef data2 = keychain_convert_data_to_string_or_plist(data);
+                CFDictionaryAddValue(res, CFSTR("data"), data2);
+                CFRelease(data);
+
+                if (data2 != data)
+                    CFRelease(data2);
+            }
+        }
+        else
+        {
+            CFStringRef cfname = CFStringCreateWithBytes(kCFAllocatorDefault, (const unsigned char*) name, strlen(name), kCFStringEncodingUTF8, false);
+            //SQLITE_INTEGER, SQLITE_FLOAT, SQLITE_TEXT, SQLITE_BLOB, or SQLITE_NULL
+            switch(sqlite3_column_type(stmt, i))
+            {
+                case SQLITE_TEXT:
+                    text = sqlite3_column_text(stmt, i);
+                    cfs = CFStringCreateWithBytes(kCFAllocatorDefault, text, strlen((const char*)text), kCFStringEncodingUTF8, false);
+                    if (cfs != NULL)
+                    {
+                        CFDictionaryAddValue(res, cfname, cfs);
+                        CFRelease(cfs);
+                    }
+                    break;
+                case SQLITE_BLOB:
+                    blob = sqlite3_column_blob(stmt, i);
+                    len = sqlite3_column_bytes(stmt, i);
+                    cfd = CFDataCreate(kCFAllocatorDefault, blob, len);
+                    if (cfd  != NULL)
+                    {
+                        CFDictionaryAddValue(res, cfname, cfd );
+                        CFRelease(cfd );
+                    }
+                    break;
+                case SQLITE_INTEGER:
+                    num64 = sqlite3_column_int64(stmt, i);
+                    cfnum = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt64Type, &num64);
+                    if (cfnum != NULL)
+                    {
+                        CFDictionaryAddValue(res, cfname, cfnum);
+                        CFRelease(cfnum);
+                    }
+                    break;
+                case SQLITE_FLOAT:
+                    dbl = sqlite3_column_double(stmt, i);
+                    cfnum = CFNumberCreate(kCFAllocatorDefault, kCFNumberFloat64Type, &dbl);
+                    if (cfnum != NULL)
+                    {
+                        CFDictionaryAddValue(res, cfname, cfnum);
+                        CFRelease(cfnum);
+                    }
+                    break;
+            }
+            CFRelease(cfname);
+        }
+    }
+    return res;
+}
+
+CFTypeRef keychain_convert_data_to_string_or_plist(CFDataRef data)
 {
     CFTypeRef item_value = NULL;
-
-	CFMutableDataRef item_data = decrypt_item(dict);
+    if( data == NULL)
+        return NULL;
     
-	if (item_data != NULL) {
-		item_value = CFStringCreateFromExternalRepresentation(kCFAllocatorDefault, item_data, kCFStringEncodingUTF8);
-
-		if (item_value == NULL && !memcmp("bplist", CFDataGetBytePtr(item_data), 6))
-            item_value = CFPropertyListCreateFromXMLData(NULL, item_data, 0, NULL);
-        if (item_value == NULL)
-            item_value = item_data;
-    }
-    else
-    {
-        item_value = CFSTR("Error! decryption failed");
-    }
-    CFDictionarySetValue(dict, CFSTR("password"), item_value);
-    CFRelease(item_value);
+    if (!memcmp("bplist", CFDataGetBytePtr(data), 6))
+        item_value = CFPropertyListCreateFromXMLData(NULL, data, kCFPropertyListImmutable, NULL);
     
-    if (item_data != NULL && item_data != item_value)
-        CFRelease(item_data);
+    if (item_value == NULL)
+        item_value = CFStringCreateFromExternalRepresentation(kCFAllocatorDefault, data, kCFStringEncodingUTF8);
+     
+    if (item_value != NULL)
+        return item_value;
+    return data;
 }
 
-void decrypt_cert_item(CFMutableDictionaryRef dict)
+void keychain_parse_certificate(Keychain* k, CFMutableDictionaryRef dict)
 {
     CFDateRef not_valid_before, not_valid_after;
     CFStringRef subject_summary, issuer_summary;
     CFDataRef serial_number, pk_sha1;
     
-	CFMutableDataRef item_data = decrypt_item(dict);
-	if (item_data == NULL)
-		return;
+    if (CFDictionaryContainsKey(dict, CFSTR("common_name")))
+        return;
     
-	SecCertificateRef cert = SecCertificateCreateWithData(NULL, item_data); 
-	
+    CFDataRef data = CFDictionaryGetValue(dict, CFSTR("data"));
+    if (data == NULL || CFGetTypeID(data) != CFDataGetTypeID())
+        return;
+    
+    SecCertificateRef cert = SecCertificateCreateWithData(NULL, data); 
+
     if (cert == NULL)
         return;
     
@@ -159,7 +235,7 @@ void decrypt_cert_item(CFMutableDictionaryRef dict)
     issuer_summary = SecCertificateCopyIssuerSummary(cert);
     not_valid_before = CFDateCreate(kCFAllocatorDefault, SecCertificateNotValidBefore(cert));
     not_valid_after = CFDateCreate(kCFAllocatorDefault, SecCertificateNotValidAfter(cert));
-	serial_number = SecCertificateCopySerialNumber(cert);
+    serial_number = SecCertificateCopySerialNumber(cert);
     pk_sha1 = SecCertificateCopyPublicKeySHA1Digest(cert);
     
     if (subject_summary != NULL)
@@ -176,7 +252,7 @@ void decrypt_cert_item(CFMutableDictionaryRef dict)
     {
         CFDictionarySetValue(dict, CFSTR("not_valid_before"), not_valid_before);
         CFRelease(not_valid_before);
-	}
+    }
     if (not_valid_after != NULL)
     {
         CFDictionarySetValue(dict, CFSTR("not_valid_after"), not_valid_after);
@@ -193,11 +269,38 @@ void decrypt_cert_item(CFMutableDictionaryRef dict)
         CFRelease(pk_sha1);
     }
     CFRelease(cert);
-    CFRelease(item_data);
-	//CFShow(SecCertificateCopySummaryProperties(cert));
 }
 
-void decrypt_key_item(CFMutableDictionaryRef dict)
+void keychain_add_cn_for_key(Keychain* k, CFMutableDictionaryRef dict)
+{
+    sqlite3_stmt* stmt;
+    
+    CFDataRef klbl = CFDictionaryGetValue(dict, CFSTR("klbl"));
+    
+    if (klbl == NULL || CFGetTypeID(klbl) != CFDataGetTypeID())
+        return;
+    
+    sqlite3_prepare_v2(k->db, "SELECT data FROM cert WHERE pkhh=?", -1, &stmt, NULL);
+    
+    sqlite3_bind_blob(stmt, 1, CFDataGetBytePtr(klbl), CFDataGetLength(klbl), SQLITE_STATIC);
+    
+    while(sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        CFMutableDictionaryRef cert = k->get_item(stmt);
+        if (cert != NULL) {
+            keychain_parse_certificate(k, cert);
+            CFStringRef cn = CFDictionaryGetValue(cert, CFSTR("common_name"));
+            if (cn != NULL) {
+                CFDictionarySetValue(dict, CFSTR("common_name"), cn);
+            }
+            CFRelease(cert);
+            break;
+        }
+    }
+    sqlite3_finalize(stmt);
+}
+
+void keychain_parse_key(Keychain* k, CFMutableDictionaryRef dict)
 {
 /**
 RSAPrivateKey ::= SEQUENCE {
@@ -224,13 +327,13 @@ RSAPrivateKey ::= SEQUENCE {
         CFSTR("coefficient"),
     };
     
-    CFMutableDataRef item_data = decrypt_item(dict);
-	if (item_data == NULL)
-		return;
+    CFDataRef data = CFDictionaryGetValue(dict, CFSTR("data"));
+    if (data == NULL || CFGetTypeID(data) != CFDataGetTypeID())
+        return;
         
     SecAsn1CoderRef coder = NULL;
     SECItem** dest = NULL;
-    CSSM_DATA der_key = {CFDataGetLength(item_data), CFDataGetBytePtr(item_data)};
+    CSSM_DATA der_key = {CFDataGetLength(data), CFDataGetBytePtr(data)};
     
     SecAsn1CoderCreate(&coder);
     
@@ -250,24 +353,27 @@ RSAPrivateKey ::= SEQUENCE {
     }
     //this seems to free all the stuff allocated by SecAsn1DecodeData
     SecAsn1CoderRelease(coder);
-    CFRelease(item_data);
+    
+    keychain_add_cn_for_key(k, dict);
     return;
 }
 
-void keychain_process(CFMutableDictionaryRef dict)
+CFArrayRef keychain_get_passwords(Keychain* k)
 {
-    //check if already decrypted
-	if (!CFDictionaryContainsKey(dict, CFSTR("protection_class")))
-	{
-		if (CFDictionaryContainsKey(dict, CFSTR("subj"))) {
-			decrypt_cert_item(dict);
-		}
-		else if (CFDictionaryContainsKey(dict, CFSTR("klbl"))) {
-			decrypt_key_item(dict);
-		}
-		else
-		{
-			decrypt_password_item(dict);
-		}
-	}
+    return keychain_get_items(k, "SELECT * from genp ORDER BY svce,acct", NULL);
+}
+
+CFArrayRef keychain_get_internet_passwords(Keychain* k)
+{
+    return keychain_get_items(k, "SELECT * from inet ORDER BY srvr,acct", NULL);
+}
+
+CFArrayRef keychain_get_certs(Keychain* k)
+{
+    return keychain_get_items(k, "SELECT * from cert ORDER BY labl", keychain_parse_certificate);
+}
+
+CFArrayRef keychain_get_keys(Keychain* k)
+{
+    return keychain_get_items(k, "SELECT * from keys ORDER BY labl", keychain_parse_key);
 }

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Keychain.h"
+#include "keychain.h"
 
 @interface RootViewController : UITableViewController {
 	NSArray* keychainCategories;
 	Keychain* keychain;
 }
 @property (retain) NSArray* keychainCategories;
-@property (retain) Keychain* keychain;
+@property () Keychain* keychain;
 @end

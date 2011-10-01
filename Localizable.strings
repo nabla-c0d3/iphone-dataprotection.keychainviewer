@@ -8,7 +8,7 @@
 "svce"="Service";
 "acct"="Account";
 "labl"="Label";
-"password"="Password";
+"data"="Password";
 "agrp"="Access group";
 "srvr"="Server";
 "port"="Port";

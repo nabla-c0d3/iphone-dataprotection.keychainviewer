@@ -80,16 +80,31 @@
     }
     NSDictionary* dict = [self.items objectAtIndex:[indexPath indexAtPosition:1]];
 	
-    if (![[dict objectForKey:@"title"] isKindOfClass:[NSString class]])
+    if ([dict objectForKey:@"common_name"])
     {
-        CFShow([dict objectForKey:@"title"]);
-        return cell;
+        cell.textLabel.text = [dict objectForKey:@"common_name"];
+        cell.detailTextLabel.text = [dict objectForKey:@"labl"];
     }
-	cell.textLabel.text = [dict objectForKey:@"title"];
-	if ([dict objectForKey:@"subtitle"])
-		cell.detailTextLabel.text = [dict objectForKey:@"subtitle"];
+    else if ([dict objectForKey:@"srvr"])
+    {
+        cell.textLabel.text = [dict objectForKey:@"acct"];
+        cell.detailTextLabel.text = [dict objectForKey:@"srvr"];
+    }
+    else
+    {
+        cell.textLabel.text = [dict objectForKey:@"acct"];
+        cell.detailTextLabel.text = [dict objectForKey:@"svce"];
+    }
+    if (![cell.textLabel.text length]) {
+        cell.textLabel.text = [dict objectForKey:@"labl"];
+    }
+    if (![cell.detailTextLabel.text length]) {
+        cell.detailTextLabel.text = [dict objectForKey:@"agrp"];
+    }
     
-    if ([dict objectForKey:@"safe_protection_class"]) {
+    NSString* clas = (NSString*) [dict objectForKey:@"protection_class"];
+
+    if (![clas hasPrefix:@"kSecAttrAccessibleAlways"]) {
         cell.textLabel.textColor = [UIColor greenColor];
     }
     else {
@@ -107,12 +122,11 @@
 	DetailViewController *detailViewController = [[DetailViewController alloc] initWithPlist:self.detailViewName];
 	
 	NSDictionary* dict = [self.items objectAtIndex:[indexPath indexAtPosition:1]];
-	
-	keychain_process(dict);
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	detailViewController.data = dict;
-    NSString* title = [[self.items objectAtIndex:[indexPath indexAtPosition:1]] objectForKey:@"title"];
-    if([title isKindOfClass:[NSString class]])
-        detailViewController.title = title;
+
+    if(cell != nil)
+        detailViewController.title = cell.textLabel.text;
 	[self.navigationController pushViewController:detailViewController animated:YES];
 	[detailViewController release];
 }
