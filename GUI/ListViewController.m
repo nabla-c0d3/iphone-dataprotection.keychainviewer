@@ -104,7 +104,7 @@
     
     NSString* clas = (NSString*) [dict objectForKey:@"protection_class"];
 
-    if (![clas hasPrefix:@"kSecAttrAccessibleAlways"]) {
+    if (![clas hasPrefix:@"Always"]) {
         cell.textLabel.textColor = [UIColor greenColor];
     }
     else {

@@ -11,12 +11,12 @@
 CFStringRef keychain_protectionClassIdToString(uint32_t protection_class)
 {
     static CFStringRef protectionClasses[] = {
-        CFSTR("kSecAttrAccessibleWhenUnlocked"),
-        CFSTR("kSecAttrAccessibleAfterFirstUnlock"),
-        CFSTR("kSecAttrAccessibleAlways"),
-        CFSTR("kSecAttrAccessibleWhenUnlockedThisDeviceOnly"),
-        CFSTR("kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly"),
-        CFSTR("kSecAttrAccessibleAlwaysThisDeviceOnly")
+        CFSTR("WhenUnlocked"),
+        CFSTR("AfterFirstUnlock"),
+        CFSTR("Always"),
+        CFSTR("WhenUnlockedThisDeviceOnly"),
+        CFSTR("AfterFirstUnlockThisDeviceOnly"),
+        CFSTR("AlwaysThisDeviceOnly")
     };
     
     if (protection_class >= 6 && protection_class <= 11)
