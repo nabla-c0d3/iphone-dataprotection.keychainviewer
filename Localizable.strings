@@ -13,7 +13,7 @@
 "srvr"="Server";
 "port"="Port";
 "ptcl"="Protocol";
-"protection_class"="Protection class";
+"protection_class"="Accessibility";
 "country"="Country Name";
 "state"="State or Province Name";
 "locality"="Locality Name";

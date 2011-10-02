@@ -53,7 +53,7 @@ Keychain* keychain_open(const char* path)
     
     if (sqlite3_open_v2(path, &k->db, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK)
     {
-        fprintf(stderr, "open_keychain : sqlite3_open_v2 fail\n");
+        fprintf(stderr, "open_keychain : sqlite3_open_v2(\"%s\") fail\n", path);
         free(k);
         return NULL;
     }
@@ -333,7 +333,7 @@ RSAPrivateKey ::= SEQUENCE {
         
     SecAsn1CoderRef coder = NULL;
     SECItem** dest = NULL;
-    CSSM_DATA der_key = {CFDataGetLength(data), CFDataGetBytePtr(data)};
+    CSSM_DATA der_key = {CFDataGetLength(data), (uint8_t*) CFDataGetBytePtr(data)};
     
     SecAsn1CoderCreate(&coder);
     

@@ -34,9 +34,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", nil];
+    self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", nil];
     self.title = @"Keychain Viewer";
-	self.keychain = keychain_open(NULL);
+    self.keychain = keychain_open(NULL);
+    if (self.keychain == NULL)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Cannot open keychain database !" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
 }
 
 
@@ -93,7 +99,9 @@
     }
 
     cell.textLabel.text = [self.keychainCategories objectAtIndex:[indexPath indexAtPosition:1]];
-    
+    if (self.keychain == NULL)
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
 
@@ -103,6 +111,8 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.keychain == NULL)
+		return;
 	NSUInteger index = [indexPath indexAtPosition:1];
 	ListViewController* listViewController = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
 	

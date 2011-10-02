@@ -5,9 +5,110 @@
 #include "IOKit.h"
 #include "keychain.h"
 
+#define kIOAESAcceleratorTask 1
+
+#define kIOAESAcceleratorEncrypt 0
+#define kIOAESAcceleratorDecrypt 1
+
+#define kIOAESAccelerator835Mask 0x835
+
+typedef struct 
+{
+    void*       inbuf;
+    void*       outbuf;
+    uint32_t    size;
+    uint8_t     iv[16];
+    uint32_t    mode;
+    uint32_t    bits;
+    uint8_t     keybuf[32];
+    uint32_t    mask;
+    uint32_t    zero; //only on iOS 4
+} IOAESStruct;
+
+
 CFDataRef decrypt_data_ios3(const uint8_t* datab, uint32_t len, uint32_t* pclass)
 {
-    return NULL;
+    IOAESStruct in;
+    IOReturn ret;
+    unsigned char md[20];
+    unsigned char pad;
+    IOByteCount IOAESStructSize = sizeof(IOAESStruct) - 4; //iOS 3 size
+    
+    if (pclass != NULL)
+        *pclass = kSecAttrAccessibleAlways;
+    
+    if (len < 48) //iv + sha1 (20, rounded to 32) = 16 + 32
+    {
+        fprintf(stderr, "decrypt_data_ios3 : len < 48\n");
+        return NULL;
+    }
+    len = len - 16;
+
+    uint8_t* buffer = malloc(len);
+    if (buffer == NULL)
+    {
+        return NULL;
+    }
+    memcpy(buffer, &datab[16], len);
+    
+    in.mode = kIOAESAcceleratorDecrypt;
+    in.bits = 128;
+    in.inbuf = buffer;
+    in.outbuf = buffer;
+    in.size = len;
+    in.mask = kIOAESAccelerator835Mask;
+
+    memset(in.keybuf, 0, sizeof(in.keybuf));
+
+    memcpy(in.iv, datab, 16);
+
+    io_service_t conn = IOKit_getConnect("IOAESAccelerator");
+    
+    uid_t saved_uid = geteuid();
+    if(seteuid(64) == -1) //securityd
+    {
+        fprintf(stderr, "seteuid(_securityd) failed, errno=%d\n", errno);
+    }
+    ret = IOConnectCallStructMethod(conn, kIOAESAcceleratorTask, &in, IOAESStructSize, &in, &IOAESStructSize);
+
+    if (ret == 0xe00002c2) //if we have an iOS 3 keychain on iOS 4
+    {
+        IOAESStructSize += 4;
+        ret = IOConnectCallStructMethod(conn, kIOAESAcceleratorTask, &in, IOAESStructSize, &in, &IOAESStructSize);
+   }
+    if (seteuid(saved_uid) == -1)
+    {
+        fprintf(stderr, "seteuid(saved_uid) failed, errno=%d\n", errno);
+    }
+
+    if (ret != 0)
+    {
+        fprintf(stderr, "decrypt_data_ios3 : saved_uid=%d IOConnectCallStructMethod = %x\n", saved_uid, ret);
+        free(buffer);
+        return NULL;
+    }
+    pad = buffer[len - 1];
+    if (pad > 16 || pad > len || pad == 0) {
+        fprintf(stderr, "decrypt_data_ios3 : bad padding = %x\n", pad);
+        free(buffer);
+        return NULL;
+    }
+    len = len - 20 - pad;
+    if (len & 0x80000000) {
+        fprintf(stderr, "decrypt_data_ios3 : length underflow, should not happen len= %x\n", len);
+        free(buffer);
+        return NULL;
+    }
+    CC_SHA1(buffer, len, md);
+    if (memcmp(&buffer[len], md, 20)) {
+        fprintf(stderr, "decrypt_data_ios3 : SHA1 mismatch\n");
+        free(buffer);
+        return NULL;
+    }
+    CFDataRef data = CFDataCreate(kCFAllocatorDefault, buffer, len);
+    free(buffer);
+    
+    return data;
 }
 
 CFMutableDictionaryRef keychain_get_item_ios3(sqlite3_stmt* stmt)
