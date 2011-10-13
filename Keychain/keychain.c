@@ -6,6 +6,7 @@
 #include "SecCert.h"
 #include "keychain.h"
 
+#define kAppleKeyStoreInitUserClient 0
 #define kAppleKeyStoreKeyUnwrap 11
 
 CFStringRef keychain_protectionClassIdToString(uint32_t protection_class)
@@ -22,6 +23,22 @@ CFStringRef keychain_protectionClassIdToString(uint32_t protection_class)
     if (protection_class >= 6 && protection_class <= 11)
         return protectionClasses[protection_class - 6];
     return CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("Unknown protection class %d"), protection_class);
+}
+
+int AppleKeyStoreKeyBagInit()
+{
+    uint64_t out = 0;
+    uint32_t one = 1;
+    return IOKit_call("AppleKeyStore",
+                      kAppleKeyStoreInitUserClient,
+                      NULL,
+                      0,
+                      NULL,
+                      0,
+                      &out,
+                      &one,
+                      NULL,
+                      NULL);
 }
 
 IOReturn AppleKeyStore_keyUnwrap(uint32_t protection_class, const uint8_t* buffer, size_t bufferLen, uint8_t* out)
