@@ -122,17 +122,21 @@
 		}
 		else if ([obj isKindOfClass:[NSDictionary class]])
 		{
-			obj = @"Dictionary";
+			cell.detailTextLabel.text = @"Dictionary";
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		}
 		else if ([obj isKindOfClass:[NSArray class]])
 		{
-			obj = @"Array";
+			cell.detailTextLabel.text = @"Array";
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		}
-		else if (![obj isKindOfClass:[NSString class]])
+		else if ([obj isKindOfClass:[NSString class]])
+		{
+			cell.detailTextLabel.text = obj;
+		}
+		else
 		{
 			NSLog(@"GenericTableViewController: object %@ has unknown type !", obj);
 		}
