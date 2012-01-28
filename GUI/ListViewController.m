@@ -67,6 +67,12 @@
     return [self.items count];
 }
 
+NSString* convertToString(id obj)
+{
+    if ([obj isKindOfClass:[NSString class]])
+        return obj;
+    return [obj description];
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,23 +89,23 @@
     if ([dict objectForKey:@"common_name"])
     {
         cell.textLabel.text = [dict objectForKey:@"common_name"];
-        cell.detailTextLabel.text = [dict objectForKey:@"labl"];
+        cell.detailTextLabel.text = convertToString([dict objectForKey:@"labl"]);
     }
     else if ([dict objectForKey:@"srvr"])
     {
-        cell.textLabel.text = [dict objectForKey:@"acct"];
-        cell.detailTextLabel.text = [dict objectForKey:@"srvr"];
+        cell.textLabel.text = convertToString([dict objectForKey:@"acct"]);
+        cell.detailTextLabel.text = convertToString([dict objectForKey:@"srvr"]);
     }
     else
     {
-        cell.textLabel.text = [dict objectForKey:@"acct"];
-        cell.detailTextLabel.text = [dict objectForKey:@"svce"];
+        cell.textLabel.text = convertToString([dict objectForKey:@"acct"]);
+        cell.detailTextLabel.text = convertToString([dict objectForKey:@"svce"]);
     }
     if (![cell.textLabel.text length]) {
-        cell.textLabel.text = [dict objectForKey:@"labl"];
+        cell.textLabel.text = convertToString([dict objectForKey:@"labl"]);
     }
     if (![cell.detailTextLabel.text length]) {
-        cell.detailTextLabel.text = [dict objectForKey:@"agrp"];
+        cell.detailTextLabel.text = convertToString([dict objectForKey:@"agrp"]);
     }
     
     NSString* clas = (NSString*) [dict objectForKey:@"protection_class"];

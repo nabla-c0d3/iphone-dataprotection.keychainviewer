@@ -12,7 +12,9 @@
 @interface RootViewController : UITableViewController {
 	NSArray* keychainCategories;
 	Keychain* keychain;
+	NSDictionary* about;
 }
 @property (retain) NSArray* keychainCategories;
+@property (retain) NSDictionary* about;
 @property () Keychain* keychain;
 @end

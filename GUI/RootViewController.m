@@ -8,10 +8,16 @@
 
 #import "RootViewController.h"
 #import "ListViewController.h"
+#import "GenericTableViewController.h"
+
+#ifndef HGVERSION
+#define HGVERSION "unknown"
+#endif
 
 @implementation RootViewController
 @synthesize keychainCategories;
 @synthesize keychain;
+@synthesize about;
 
 #pragma mark -
 #pragma mark Initialization
@@ -34,7 +40,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", nil];
+    NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    self.about = [NSDictionary dictionaryWithObjectsAndKeys:version, @"Version", @HGVERSION, @"Revision", nil];
+    self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", @"About", nil];
     self.title = @"Keychain Viewer";
     self.keychain = keychain_open(NULL);
     if (self.keychain == NULL)
@@ -114,6 +122,15 @@
 	if (self.keychain == NULL)
 		return;
 	NSUInteger index = [indexPath indexAtPosition:1];
+	
+	if (index == 4) {
+		GenericTableViewController* genericTable = [[GenericTableViewController alloc] initWithObject: self.about];
+		genericTable.title = @"About";
+		[self.navigationController pushViewController:genericTable animated:YES];
+		[genericTable release];
+		return;
+	}
+	
 	ListViewController* listViewController = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
 	
 	if (index == 0) {
