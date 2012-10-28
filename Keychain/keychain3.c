@@ -14,8 +14,8 @@
 
 typedef struct 
 {
-    void*       inbuf;
-    void*       outbuf;
+    void*       cleartext;
+    void*       ciphertext;
     uint32_t    size;
     uint8_t     iv[16];
     uint32_t    mode;
@@ -44,17 +44,23 @@ CFDataRef decrypt_data_ios3(const uint8_t* datab, uint32_t len, uint32_t* pclass
     }
     len = len - 16;
 
-    uint8_t* buffer = malloc(len);
+    uint8_t* buffer = valloc(len);
     if (buffer == NULL)
     {
+        return NULL;
+    }
+    uint8_t* output_buffer = valloc(len);
+    if (output_buffer == NULL)
+    {
+        free(buffer);
         return NULL;
     }
     memcpy(buffer, &datab[16], len);
     
     in.mode = kIOAESAcceleratorDecrypt;
     in.bits = 128;
-    in.inbuf = buffer;
-    in.outbuf = buffer;
+    in.cleartext = output_buffer;
+    in.ciphertext = buffer;
     in.size = len;
     in.mask = kIOAESAccelerator835Mask;
 
@@ -89,28 +95,33 @@ CFDataRef decrypt_data_ios3(const uint8_t* datab, uint32_t len, uint32_t* pclass
     {
         fprintf(stderr, "decrypt_data_ios3 : saved_uid=%d IOConnectCallStructMethod = %x\n", saved_uid, ret);
         free(buffer);
+        free(output_buffer);
         return NULL;
     }
-    pad = buffer[len - 1];
+    pad = output_buffer[len - 1];
     if (pad > 16 || pad > len || pad == 0) {
         fprintf(stderr, "decrypt_data_ios3 : bad padding = %x\n", pad);
         free(buffer);
+        free(output_buffer);
         return NULL;
     }
     len = len - 20 - pad;
     if (len & 0x80000000) {
         fprintf(stderr, "decrypt_data_ios3 : length underflow, should not happen len= %x\n", len);
         free(buffer);
+        free(output_buffer);
         return NULL;
     }
-    CC_SHA1(buffer, len, md);
-    if (memcmp(&buffer[len], md, 20)) {
+    CC_SHA1(output_buffer, len, md);
+    if (memcmp(&output_buffer[len], md, 20)) {
         fprintf(stderr, "decrypt_data_ios3 : SHA1 mismatch\n");
         free(buffer);
+        free(output_buffer);
         return NULL;
     }
-    CFDataRef data = CFDataCreate(kCFAllocatorDefault, buffer, len);
+    CFDataRef data = CFDataCreate(kCFAllocatorDefault, output_buffer, len);
     free(buffer);
+    free(output_buffer);
     
     return data;
 }

@@ -1,5 +1,5 @@
-SDKVER?=4.3
-CC=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin10-gcc-4.0.1 
+SDKVER?=5.1
+CC=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2
 SDK=/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
 CFLAGS=-Wall -isysroot $(SDK) -framework IOKit -framework CoreFoundation -framework Security -O3 -I.
 
