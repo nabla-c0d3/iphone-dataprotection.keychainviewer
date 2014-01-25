@@ -5,6 +5,7 @@
 #include <sqlite3.h>
 #include "IOKit.h"
 #include "keychain.h"
+#include "der_decode_plist.h"
 
 //HAX to compile without ios 5 SDK
 int (*CCCryptorGCM)() = NULL;
@@ -19,6 +20,8 @@ void getCCCryptorGCM()
 
 CFMutableDictionaryRef decrypt_data_ios5(const uint8_t* datab, uint32_t len, uint32_t* pclass)
 {
+    CFMutableDictionaryRef plist = NULL;
+    CFErrorRef err = NULL;
     uint8_t aes_key[48];
     uint32_t version, protection_class, wrapped_length, item_length;
     CCCryptorStatus cs = 0;
@@ -38,9 +41,9 @@ CFMutableDictionaryRef decrypt_data_ios5(const uint8_t* datab, uint32_t len, uin
     wrapped_length = ((uint32_t*) datab)[2];
     item_length = len - 48 - 4 - 16;
 
-    if (version != 2)
+    if (version != 2 && version != 3)
     {
-        fprintf(stderr, "decrypt_data_ios5 : version != 2\n");
+        fprintf(stderr, "decrypt_data_ios5 : version = %d\n", version);
         return NULL;
     }
     if (wrapped_length != 40)
@@ -88,8 +91,19 @@ CFMutableDictionaryRef decrypt_data_ios5(const uint8_t* datab, uint32_t len, uin
         return NULL;
     }
     
-    CFMutableDictionaryRef plist = CFPropertyListCreateFromXMLData(NULL, item, kCFPropertyListMutableContainersAndLeaves, NULL);
+    if (version == 3)
+    {
+        der_decode_plist(kCFAllocatorDefault, 1,
+                         (CFPropertyListRef*) &plist, &err,
+                         (const uint8_t*) CFDataGetBytePtr(item),
+                         (const uint8_t*) CFDataGetBytePtr(item) + item_length);
+    }
+    else
+    {
+        plist = (CFMutableDictionaryRef) CFPropertyListCreateFromXMLData(NULL, item, kCFPropertyListMutableContainersAndLeaves, NULL);
+    }
     CFRelease(item);
+
     if (plist != NULL && CFGetTypeID(plist) != CFDictionaryGetTypeID())
     {
         fprintf(stderr, "decrypt_data_ios5 : CFPropertyListCreateFromXMLData did not return a dictionary\n");

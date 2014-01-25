@@ -216,7 +216,7 @@ CFMutableDictionaryRef keychain_get_item(sqlite3_stmt* stmt, CFDataRef (*decrypt
 CFTypeRef keychain_convert_data_to_string_or_plist(CFDataRef data)
 {
     CFTypeRef item_value = NULL;
-    if( data == NULL)
+    if( data == NULL || CFDataGetBytePtr(data) == NULL)
         return NULL;
     
     if (!memcmp("bplist", CFDataGetBytePtr(data), 6))

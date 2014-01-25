@@ -1,4 +1,5 @@
 #include <sqlite3.h>
+#include <IOKit/IOKitLib.h>
 
 #define kSecAttrAccessibleWhenUnlocked                      6
 #define kSecAttrAccessibleAfterFirstUnlock                  7
@@ -14,7 +15,7 @@ typedef struct Keychain
     CFMutableDictionaryRef (*get_item)(sqlite3_stmt*);
 } Keychain;
 
-//IOReturn AppleKeyStore_keyUnwrap(uint32_t protection_class, const uint8_t* buffer, size_t bufferLen, uint8_t* out);
+IOReturn AppleKeyStore_keyUnwrap(uint32_t protection_class, const uint8_t* buffer, size_t bufferLen, uint8_t* out);
 
 Keychain* keychain_open(const char* path);
 int keychain_close(Keychain*);
@@ -34,3 +35,5 @@ CFArrayRef keychain_get_passwords(Keychain* k);
 CFArrayRef keychain_get_internet_passwords(Keychain* k);
 CFArrayRef keychain_get_certs(Keychain* k);
 CFArrayRef keychain_get_keys(Keychain* k);
+
+CFStringRef keychain_protectionClassIdToString(uint32_t protection_class);

@@ -30,6 +30,7 @@
 		848AD879135485370042EA64 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 848AD878135485370042EA64 /* Localizable.strings */; };
 		84977EB1136AEF1100FE77E0 /* KeyView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84977EB0136AEF1100FE77E0 /* KeyView.plist */; };
 		84A57896136EFED5006C06F3 /* keychain.c in Sources */ = {isa = PBXBuildFile; fileRef = 84A57895136EFED5006C06F3 /* keychain.c */; };
+		84ADA8FC1881A21D004C774F /* der_decode_plist.c in Sources */ = {isa = PBXBuildFile; fileRef = 84ADA8FA1881A21D004C774F /* der_decode_plist.c */; };
 		84EE5A7113549B2A007DB219 /* InternetPasswordView.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */; };
 		84EE5A7C13549EBA007DB219 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84EE5A7B13549EBA007DB219 /* Security.framework */; };
 /* End PBXBuildFile section */
@@ -67,6 +68,8 @@
 		848AD878135485370042EA64 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		84977EB0136AEF1100FE77E0 /* KeyView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeyView.plist; sourceTree = "<group>"; };
 		84A57895136EFED5006C06F3 /* keychain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain.c; sourceTree = "<group>"; };
+		84ADA8FA1881A21D004C774F /* der_decode_plist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = der_decode_plist.c; sourceTree = "<group>"; };
+		84ADA8FB1881A21D004C774F /* der_decode_plist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = der_decode_plist.h; sourceTree = "<group>"; };
 		84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InternetPasswordView.plist; sourceTree = "<group>"; };
 		84EE5A7B13549EBA007DB219 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		84FFDBE7136AEC4300021E7C /* SecCert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecCert.h; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 		8484F56B1355B5D200F87AA7 /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
+				84ADA8FA1881A21D004C774F /* der_decode_plist.c */,
+				84ADA8FB1881A21D004C774F /* der_decode_plist.h */,
 				3001AFDA14374DE400AA17EC /* keychain.h */,
 				3001AFD314374DA900AA17EC /* keychain3.c */,
 				3001AFD414374DA900AA17EC /* keychain4.c */,
@@ -260,6 +265,7 @@
 				3001AFD614374DA900AA17EC /* keychain3.c in Sources */,
 				3001AFD714374DA900AA17EC /* keychain4.c in Sources */,
 				3001AFD814374DA900AA17EC /* keychain5.c in Sources */,
+				84ADA8FC1881A21D004C774F /* der_decode_plist.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "Keychain/Entitlements.plist";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -287,7 +293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_ENTITLEMENTS = "Keychain/Entitlements.plist";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = KeychainViewer_Prefix.pch;

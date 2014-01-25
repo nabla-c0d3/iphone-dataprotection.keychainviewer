@@ -1,15 +1,15 @@
 SDKVER?=5.1
+ARCH?=armv6
 HGVERSION:= $(shell hg parents --template '{node|short}' || echo "unknown")
-SDK=/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
-CC:=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin10-llvm-gcc-4.2
-CFLAGS=-isysroot $(SDK) -DHGVERSION="\"${HGVERSION}\""
-CFLAGS_IOKIT=$(CFLAGS) -I/usr/local/include -L./lib -lIOKit -framework Security -O3 -lsqlite3 -lobjc -framework Foundation -framework CoreFoundation -framework UIKit -I./Keychain -I./GUI
+SDK=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
+CC=clang -Wall -arch $(ARCH)
+CFLAGS=-isysroot $(SDK) -DHGVERSION="\"${HGVERSION}\"" -framework IOKit -framework Security -framework Foundation -framework CoreFoundation -framework UIKit  -lsqlite3 -I./Keychain -I./GUI -O3
 
-SRC=main.m GUI/DetailViewController.m GUI/GenericTableViewController.m GUI/KeychainViewerAppDelegate.m GUI/ListViewController.m GUI/RootViewController.m Keychain/IOKit.c Keychain/keychain.c Keychain/keychain3.c Keychain/keychain4.c Keychain/keychain5.c
+SRC=main.m GUI/DetailViewController.m GUI/GenericTableViewController.m GUI/KeychainViewerAppDelegate.m GUI/ListViewController.m GUI/RootViewController.m Keychain/IOKit.c Keychain/keychain.c Keychain/keychain3.c Keychain/keychain4.c Keychain/keychain5.c keychain/der_decode_plist.c
 
 all: KeychainViewer
 
 KeychainViewer: $(SRC)
-	$(CC) $(CFLAGS_IOKIT) -o $@ $^
-	ldid -SKeychain/Entitlements.plist $@
+	$(CC) $(CFLAGS) -o $@ $^
+	codesign -s - --entitlements Keychain/Entitlements.plist $@
 

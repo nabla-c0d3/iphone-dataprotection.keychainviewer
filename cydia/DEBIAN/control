@@ -1,6 +1,6 @@
 Package: com.sogeti.esec-lab.keychainviewer
 Name: Keychain Viewer
-Version: 0.3
+Version: 0.4
 Architecture: iphoneos-arm
 Description: Keychain Viewer
 Author: Sogeti ESEC R&D lab
