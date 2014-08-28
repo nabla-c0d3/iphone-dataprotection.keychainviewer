@@ -32,7 +32,7 @@ CFDataRef decrypt_data_ios3(const uint8_t* datab, uint32_t len, uint32_t* pclass
     IOReturn ret;
     unsigned char md[20];
     unsigned char pad;
-    IOByteCount IOAESStructSize = sizeof(IOAESStruct) - 4; //iOS 3 size
+    size_t IOAESStructSize = sizeof(IOAESStruct) - 4; //iOS 3 size
     
     if (pclass != NULL)
         *pclass = kSecAttrAccessibleAlways;

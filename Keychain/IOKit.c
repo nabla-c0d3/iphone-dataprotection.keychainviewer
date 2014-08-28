@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <mach/mach.h>
 #include "IOKit.h"
 
 struct ioconnectCache {

@@ -64,12 +64,12 @@ typedef size_t cc_size;
 typedef int ccoid_t;
 typedef void cc_unit;
 
-static const CFIndex kSecDERErrorUnknownEncoding = -1;
+/*static const CFIndex kSecDERErrorUnknownEncoding = -1;
 static const CFIndex kSecDERErrorUnsupportedCFObject = -2;
 static const CFIndex kSecDERErrorUnsupportedDERType = -2;
 static const CFIndex kSecDERErrorAllocationFailure = -3;
 static const CFIndex kSecDERErrorUnsupportedNumberType = -4;
-static const CFIndex kSecDERErrorUnderlyingError = -100;
+static const CFIndex kSecDERErrorUnderlyingError = -100;*/
 
 const uint8_t* (*ccder_decode_tag)(ccder_tag *tagp, const uint8_t *der, const uint8_t *der_end) = NULL;
 const uint8_t* (*ccder_decode_tl)(ccder_tag expected_tag, size_t *lenp, const uint8_t *der, const uint8_t *der_end) = NULL;

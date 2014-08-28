@@ -1,13 +1,11 @@
 SDKVER?=5.1
 ARCH?=armv6
-CC=clang -arch $(ARCH)
-SDK=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
+DEVELOPER_DIR=/Users/admin/Xcode441.app/Contents/Developer/
+SDK=$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
+CC=clang -Wall -arch $(ARCH)
 CFLAGS=-Wall -isysroot $(SDK) -framework IOKit -framework CoreFoundation -framework Security -I.
 
 all: keychain_dump
-
-IOKit:
-	ln -s /System/Library/Frameworks/IOKit.framework/Versions/Current/Headers IOKit
 
 sqlite3.c:
 	curl -O http://www.sqlite.org/sqlite-amalgamation-3070800.zip
