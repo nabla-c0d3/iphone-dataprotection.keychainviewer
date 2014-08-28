@@ -1,7 +1,8 @@
 SDKVER?=5.1
 ARCH?=armv6
 HGVERSION:= $(shell hg parents --template '{node|short}' || echo "unknown")
-SDK=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
+DEVELOPER_DIR=/Users/admin/Xcode441.app/Contents/Developer/
+SDK=$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
 CC=clang -Wall -arch $(ARCH)
 CFLAGS=-isysroot $(SDK) -DHGVERSION="\"${HGVERSION}\"" -framework IOKit -framework Security -framework Foundation -framework CoreFoundation -framework UIKit  -lsqlite3 -I./Keychain -I./GUI -O3
 

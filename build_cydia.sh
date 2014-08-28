@@ -1,12 +1,26 @@
 #!/bin/bash
-IPHONE_HOST="localhost"
-SSHPORT=2222
 
-cp -R build/Release-iphoneos/KeychainViewer.app cydia/Applications/
-make
-cp KeychainViewer cydia/Applications/KeychainViewer.app/KeychainViewer
+BINARY="./cydia/Applications/KeychainViewer.app/KeychainViewer"
+HGREV=`hg parents --template '{node|short}'`
+#http://stackoverflow.com/questions/2708380/xcodebuild-how-to-define-preprocessor-macro
+defines=("HGVERSION=\"${HGREV}\"")
 
-ssh -p $SSHPORT root@$IPHONE_HOST 'rm -rf /var/root/cydia'
-scp -P $SSHPORT -r cydia root@$IPHONE_HOST:/var/root
-ssh -p $SSHPORT root@$IPHONE_HOST 'chmod -R 755 cydia/Applications/KeychainViewer.app; chown root:wheel cydia/Applications/KeychainViewer.app/KeychainViewer; chmod +xs cydia/Applications/KeychainViewer.app/KeychainViewer; chmod 755 cydia/DEBIAN ; dpkg-deb -b cydia'
-scp -P $SSHPORT root@$IPHONE_HOST:/var/root/cydia.deb keychainviewer.deb
+rm -rf cydia/Applications/*
+
+xcodebuild -arch armv6 \
+           CODE_SIGNING_REQUIRED=NO \
+           CODE_SIGN_IDENTITY=""  \
+           CONFIGURATION_BUILD_DIR=cydia/Applications/ \
+           DEBUG_INFORMATION_FORMAT=dwarf \
+           OTHER_LDFLAGS="-weak_library /usr/lib/libSystem.B.dylib" \
+           GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")"
+
+codesign -s - --entitlements Keychain/Entitlements.plist $BINARY
+
+plutil -replace CFBundleExecutable -string rootstrap.sh cydia/Applications/KeychainViewer.app/Info.plist 
+
+echo "Setting KeychainViewer setuid root"
+sudo chown root:wheel $BINARY
+sudo chmod +xs $BINARY
+
+./dpkg-deb-fat -b cydia keychainviewer.deb
