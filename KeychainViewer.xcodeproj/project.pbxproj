@@ -13,7 +13,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
-		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		3001AFD614374DA900AA17EC /* keychain3.c in Sources */ = {isa = PBXBuildFile; fileRef = 3001AFD314374DA900AA17EC /* keychain3.c */; };
 		3001AFD714374DA900AA17EC /* keychain4.c in Sources */ = {isa = PBXBuildFile; fileRef = 3001AFD414374DA900AA17EC /* keychain4.c */; };
 		3001AFD814374DA900AA17EC /* keychain5.c in Sources */ = {isa = PBXBuildFile; fileRef = 3001AFD514374DA900AA17EC /* keychain5.c */; };
@@ -43,7 +42,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AAE50D9B0CCF005BE974 /* KeychainViewer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainViewer_Prefix.pch; sourceTree = "<group>"; };
-		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3001AFD314374DA900AA17EC /* keychain3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain3.c; sourceTree = "<group>"; };
 		3001AFD414374DA900AA17EC /* keychain4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keychain4.c; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				0FF6075A135CD0420031F82A /* icon.png */,
 				0FBA17951354DB930076D534 /* PasswordView.plist */,
 				84EE5A7013549B2A007DB219 /* InternetPasswordView.plist */,
-				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* KeychainViewer-Info.plist */,
 				848AD7FF1354717C0042EA64 /* CertificateView.plist */,
 				848AD878135485370042EA64 /* Localizable.strings */,
@@ -211,6 +208,8 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KeychainViewer" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -236,7 +235,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				848AD8001354717C0042EA64 /* CertificateView.plist in Resources */,
 				848AD879135485370042EA64 /* Localizable.strings in Resources */,
 				84EE5A7113549B2A007DB219 /* InternetPasswordView.plist in Resources */,

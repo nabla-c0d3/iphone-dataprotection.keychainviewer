@@ -22,9 +22,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    RootViewController* root = [[RootViewController alloc] init];
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController: root];
+    [root release];
+    //http://stackoverflow.com/questions/8706828/application-windows-are-expected-to-have-a-root-view-controller-at-the-end-of-a
+    if ([window respondsToSelector:@selector(setRootViewController:)]) {
+        window.rootViewController = navigationController;
+    } else {
+        [window addSubview:navigationController.view];
+    }
     // Add the navigation controller's view to the window and display.
-    [self.window addSubview:navigationController.view];
+    //[self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
 
     return YES;

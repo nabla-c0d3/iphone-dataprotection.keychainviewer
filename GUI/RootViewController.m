@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
-    self.about = [NSDictionary dictionaryWithObjectsAndKeys:version, @"Version", @HGVERSION, @"Revision", nil];
+    self.about = [NSDictionary dictionaryWithObjectsAndKeys:version, @"Version", @HGVERSION, @"Revision", @__DATE__, @"Build date", nil];
     self.keychainCategories = [NSArray arrayWithObjects:@"Generic Passwords",@"Internet Passwords",@"Certificates",@"Keys", @"About", nil];
     self.title = @"Keychain Viewer";
     self.keychain = keychain_open(NULL);
@@ -119,8 +119,6 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.keychain == NULL)
-		return;
 	NSUInteger index = [indexPath indexAtPosition:1];
 	
 	if (index == 4) {
@@ -130,7 +128,8 @@
 		[genericTable release];
 		return;
 	}
-	
+    if (self.keychain == NULL)
+		return;
 	ListViewController* listViewController = [[ListViewController alloc] initWithStyle:UITableViewStylePlain];
 	
 	if (index == 0) {
