@@ -23,4 +23,4 @@ echo "Setting KeychainViewer setuid root"
 sudo chown root:wheel $BINARY
 sudo chmod +xs $BINARY
 
-./dpkg-deb-fat -b cydia keychainviewer.deb
+./dpkg-deb-fat -b cydia keychainviewer-${HGREV}.deb
