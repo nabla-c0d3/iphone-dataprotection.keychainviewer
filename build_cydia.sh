@@ -6,6 +6,7 @@ HGREV=`hg parents --template '{node|short}'`
 defines=("HGVERSION=\"${HGREV}\"")
 
 rm -rf cydia/Applications/*
+rm -rf build/
 
 xcodebuild -arch armv6 \
            CODE_SIGNING_REQUIRED=NO \

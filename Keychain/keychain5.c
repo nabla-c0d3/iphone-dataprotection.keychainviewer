@@ -35,7 +35,7 @@ CFMutableDictionaryRef decrypt_data_ios5(const uint8_t* datab, uint32_t len, uin
         return NULL;
     }
     version = ((uint32_t*) datab)[0];
-    protection_class = ((uint32_t*) datab)[1];
+    protection_class = ((uint32_t*) datab)[1] & 0xF;
     if (pclass != NULL)
         *pclass = protection_class;
     wrapped_length = ((uint32_t*) datab)[2];
