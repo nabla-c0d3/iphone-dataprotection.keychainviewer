@@ -19,7 +19,8 @@ CFStringRef keychain_protectionClassIdToString(uint32_t protection_class)
         CFSTR("AfterFirstUnlockThisDeviceOnly"),
         CFSTR("AlwaysThisDeviceOnly")
     };
-    
+    protection_class &= 0xF;
+
     if (protection_class >= 6 && protection_class <= 11)
         return protectionClasses[protection_class - 6];
     return CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("Unknown protection class %d"), protection_class);
