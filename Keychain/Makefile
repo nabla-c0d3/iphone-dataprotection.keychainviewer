@@ -1,7 +1,5 @@
-SDKVER?=5.1
 ARCH?=armv6
-DEVELOPER_DIR=/Users/admin/Xcode441.app/Contents/Developer/
-SDK=$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(SDKVER).sdk/
+SDK=$(shell xcodebuild -version -sdk iphoneos Path)
 CC=clang -Wall -arch $(ARCH)
 CFLAGS=-Wall -isysroot $(SDK) -framework IOKit -framework CoreFoundation -framework Security -I.
 

@@ -16,6 +16,8 @@ xcodebuild -arch armv6 \
            OTHER_LDFLAGS="-weak_library /usr/lib/libSystem.B.dylib" \
            GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS '"$(printf '%q ' "${defines[@]}")"
 
+./patch_lc_version_min_iphoneos.py $BINARY
+
 codesign -s - --entitlements Keychain/Entitlements.plist $BINARY
 
 plutil -replace CFBundleExecutable -string rootstrap.sh cydia/Applications/KeychainViewer.app/Info.plist 
