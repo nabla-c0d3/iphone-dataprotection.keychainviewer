@@ -19,6 +19,7 @@
 		3008F14913522F2C00A74706 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3008F14813522F2C00A74706 /* libsqlite3.0.dylib */; };
 		841CB800136059110005A5BB /* rootstrap.sh in Resources */ = {isa = PBXBuildFile; fileRef = 841CB7FF136059110005A5BB /* rootstrap.sh */; };
 		84221F1813535CA300618510 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84221F1713535CA300618510 /* IOKit.framework */; };
+		84539E6B1A618576007B3095 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84539E6A1A618576007B3095 /* Default-568h@2x.png */; };
 		8484F57B1355B5D200F87AA7 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5641355B5D200F87AA7 /* DetailViewController.m */; };
 		8484F57C1355B5D200F87AA7 /* KeychainViewerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5661355B5D200F87AA7 /* KeychainViewerAppDelegate.m */; };
 		8484F57D1355B5D200F87AA7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8484F5681355B5D200F87AA7 /* ListViewController.m */; };
@@ -50,6 +51,7 @@
 		3008F14813522F2C00A74706 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		841CB7FF136059110005A5BB /* rootstrap.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = rootstrap.sh; sourceTree = "<group>"; };
 		84221F1713535CA300618510 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		84539E6A1A618576007B3095 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8484F5631355B5D200F87AA7 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		8484F5641355B5D200F87AA7 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		8484F5651355B5D200F87AA7 /* KeychainViewerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainViewerAppDelegate.h; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				84539E6A1A618576007B3095 /* Default-568h@2x.png */,
 				84977EB0136AEF1100FE77E0 /* KeyView.plist */,
 				841CB7FF136059110005A5BB /* rootstrap.sh */,
 				0FF6075A135CD0420031F82A /* icon.png */,
@@ -208,8 +211,6 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			attributes = {
-			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KeychainViewer" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -242,6 +243,7 @@
 				0FF6075B135CD0420031F82A /* icon.png in Resources */,
 				841CB800136059110005A5BB /* rootstrap.sh in Resources */,
 				84977EB1136AEF1100FE77E0 /* KeyView.plist in Resources */,
+				84539E6B1A618576007B3095 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = "Keychain/Entitlements.plist";
+				CODE_SIGN_ENTITLEMENTS = Keychain/Entitlements.plist;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -291,7 +293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = "Keychain/Entitlements.plist";
+				CODE_SIGN_ENTITLEMENTS = Keychain/Entitlements.plist;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = KeychainViewer_Prefix.pch;
